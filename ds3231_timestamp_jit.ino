@@ -3,6 +3,10 @@
 *  it polls the DS3231 to see when the "seconds" register changes, so that the time
 *  is as "timely" as possible.
 *
+*  SOFTWARE:
+*   this depends on Adafruit's RTClib
+*   it also depends on Wire library (should be included with Arduino IDE)
+*
 *  HARDWARE:
 *   Feather M0 (not tested on other Arduinos)
 *   Adafruit DS3231 RTC module
@@ -18,7 +22,7 @@
 *  
 *  RELATED:
 *   this works together with a host script that receives "full" timestamp: "2020-11-07T09:25:57"
-*   and compares it to host system time.  It expects the RTC to be UTC time.
+*   and compares it to host system time.  It expects the RTC to be set to UTC time.
 *   (see related script rtc_read.py)
 *  
 */
@@ -142,8 +146,8 @@ int rtc_wait()
       if (rtc_read1(buf) == 0)   // error condition (shouldn't happen)
         return 0; // error
     
-        if (buf[0] != prev_byte)
-          changed = 1;
+      if (buf[0] != prev_byte)
+        changed = 1;
     }
     return 1; // ok
 }
